@@ -1,7 +1,9 @@
 import 'package:easy_do/src/modules/home_screen/view/home_view.dart';
 import 'package:easy_do/src/modules/sign_in/view/sign_in_view.dart';
+import 'package:easy_do/src/routing/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,9 +19,7 @@ class _SplashScreenState extends State<SplashScreen>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-        return const SignInView();
-      }));
+      context.pushReplacementNamed(AppRoute.signIn.name);
     });
 
     super.initState();
