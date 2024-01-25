@@ -4,6 +4,7 @@ import 'package:easy_do/src/components/sign_topbar.dart';
 import 'package:easy_do/src/components/signin_signup_text.dart';
 import 'package:easy_do/src/constants/app_sizer.dart';
 import 'package:easy_do/src/modules/sign_up/providers/signup_provider.dart';
+import 'package:easy_do/src/providers/common_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -56,6 +57,9 @@ class SignUpView extends ConsumerWidget {
                     ),
                     gapH12,
                     TextFormField(
+                      controller: ref.watch(
+                        textControllerProvider('signup_name'),
+                      ),
                       decoration: const InputDecoration(
                         labelText: 'Name',
                       ),
@@ -66,6 +70,9 @@ class SignUpView extends ConsumerWidget {
                     ),
                     gapH12,
                     TextFormField(
+                      controller: ref.watch(
+                        textControllerProvider('signup_email'),
+                      ),
                       decoration: const InputDecoration(
                         labelText: 'Email',
                       ),
@@ -76,6 +83,9 @@ class SignUpView extends ConsumerWidget {
                     ),
                     gapH12,
                     TextFormField(
+                      controller: ref.watch(
+                        textControllerProvider('signup_password'),
+                      ),
                       obscureText: ref.watch(signupPasswordProvider),
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -101,6 +111,9 @@ class SignUpView extends ConsumerWidget {
                     ),
                     gapH12,
                     TextFormField(
+                      controller: ref.watch(
+                        textControllerProvider('signup_retypePassword'),
+                      ),
                       obscureText: ref.watch(signupPassworRetypeProvider),
                       decoration: InputDecoration(
                           labelText: 'Retype Password',
@@ -118,8 +131,11 @@ class SignUpView extends ConsumerWidget {
                           )),
                     ),
                     gapH28,
-                    const CusomExtendedButton(
-                      name: 'Sign up',
+                    GestureDetector(
+                      onTap: () {},
+                      child: const CusomExtendedButton(
+                        name: 'Sign up',
+                      ),
                     ),
                     gapH64,
                   ],

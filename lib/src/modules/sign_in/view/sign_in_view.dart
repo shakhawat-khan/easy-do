@@ -4,7 +4,10 @@ import 'package:easy_do/src/components/signin_signup_text.dart';
 import 'package:easy_do/src/components/sign_topbar.dart';
 import 'package:easy_do/src/constants/app_sizer.dart';
 import 'package:easy_do/src/modules/sign_in/providers/sign_in_provider.dart';
+import 'package:easy_do/src/modules/sign_in/providers/signin_function.dart';
+import 'package:easy_do/src/providers/common_providers.dart';
 import 'package:easy_do/src/routing/app_route.dart';
+import 'package:easy_do/src/utils/log_message.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,6 +52,8 @@ class SignInView extends ConsumerWidget {
                     ),
                     gapH12,
                     TextFormField(
+                      controller:
+                          ref.watch(textControllerProvider('signIn_email')),
                       decoration: const InputDecoration(
                         labelText: 'Email',
                       ),
@@ -59,6 +64,9 @@ class SignInView extends ConsumerWidget {
                     ),
                     gapH12,
                     TextFormField(
+                      controller: ref.watch(
+                        textControllerProvider('signIn_password'),
+                      ),
                       obscureText: ref.watch(signInProviderProvider),
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -77,7 +85,48 @@ class SignInView extends ConsumerWidget {
                       ),
                     ),
                     gapH28,
-                    const CusomExtendedButton(name: 'Sign in'),
+                    GestureDetector(
+                        onTap: () async {
+                          // logSmall(
+                          //   message: ref
+                          //       .watch(
+                          //         textControllerProvider(
+                          //           'signIn_password',
+                          //         ),
+                          //       )
+                          //       .text,
+                          // );
+
+                          // logSmall(
+                          //   message:
+                          // ref
+                          //       .watch(
+                          //         textControllerProvider(
+                          //           'signIn_email',
+                          //         ),
+                          //       )
+                          //       .text,
+                          // );
+
+                          await login(
+                            mail: ref
+                                .watch(
+                                  textControllerProvider(
+                                    'signIn_email',
+                                  ),
+                                )
+                                .text,
+                            pass: ref
+                                .watch(
+                                  textControllerProvider(
+                                    'signIn_password',
+                                  ),
+                                )
+                                .text,
+                            context: context,
+                          );
+                        },
+                        child: const CusomExtendedButton(name: 'Sign in')),
                     gapH28,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
