@@ -6,7 +6,7 @@ part 'sign_in_provider.g.dart';
 class SignInProvider extends _$SignInProvider {
   @override
   bool build() {
-    return false;
+    return true;
   }
 
   void toggleValue() {

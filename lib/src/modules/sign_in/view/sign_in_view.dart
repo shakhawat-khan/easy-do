@@ -59,14 +59,20 @@ class SignInView extends ConsumerWidget {
                     ),
                     gapH12,
                     TextFormField(
-                      obscureText: true,
+                      obscureText: ref.watch(signInProviderProvider),
                       decoration: InputDecoration(
                         labelText: 'Password',
                         suffixIcon: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            ref
+                                .read(signInProviderProvider.notifier)
+                                .toggleValue();
+                          },
                           icon: ref.watch(signInProviderProvider) == true
-                              ? const Icon(Icons.visibility)
-                              : const Icon(Icons.visibility_off),
+                              ? const Icon(Icons.visibility_off)
+                              : const Icon(
+                                  Icons.visibility,
+                                ),
                         ),
                       ),
                     ),
