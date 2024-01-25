@@ -1,4 +1,3 @@
-import 'package:easy_do/src/modules/splash/view/splash_view.dart';
 import 'package:easy_do/src/routing/app_route.dart';
 import 'package:easy_do/src/theme/light/light_theme.dart';
 import 'package:flutter/material.dart';

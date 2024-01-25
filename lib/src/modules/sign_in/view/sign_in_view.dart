@@ -1,14 +1,20 @@
 import 'package:easy_do/src/components/custom_extended_button.dart';
-import 'package:easy_do/src/components/signIn_signUp_text.dart';
-import 'package:easy_do/src/constants/app_sizer.dart';
-import 'package:easy_do/src/utils/hex_color.dart';
-import 'package:flutter/material.dart';
+import 'package:easy_do/src/components/signin_signup_text.dart';
 
-class SignInView extends StatelessWidget {
+import 'package:easy_do/src/components/sign_topbar.dart';
+import 'package:easy_do/src/constants/app_sizer.dart';
+import 'package:easy_do/src/modules/sign_in/providers/sign_in_provider.dart';
+import 'package:easy_do/src/routing/app_route.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+class SignInView extends ConsumerWidget {
   const SignInView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -16,31 +22,7 @@ class SignInView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: MediaQuery.sizeOf(context).width,
-                height: 180,
-                decoration: const ShapeDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/splash_color.png'),
-                    fit: BoxFit.fill,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(28),
-                      bottomRight: Radius.circular(28),
-                    ),
-                  ),
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    height: 80,
-                    width: 80,
-                    child: Image(
-                        fit: BoxFit.contain,
-                        image: AssetImage('assets/images/splash_logo.png')),
-                  ),
-                ),
-              ),
+              const SIgnInTopBar(),
               gapH24,
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -77,17 +59,24 @@ class SignInView extends StatelessWidget {
                     ),
                     gapH12,
                     TextFormField(
-                      decoration: const InputDecoration(
+                      obscureText: true,
+                      decoration: InputDecoration(
                         labelText: 'Password',
+                        suffixIcon: IconButton(
+                          onPressed: () {},
+                          icon: ref.watch(signInProviderProvider) == true
+                              ? const Icon(Icons.visibility)
+                              : const Icon(Icons.visibility_off),
+                        ),
                       ),
                     ),
                     gapH28,
                     const CusomExtendedButton(name: 'Sign in'),
                     gapH28,
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Don\'t have an account?',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -99,15 +88,20 @@ class SignInView extends StatelessWidget {
                           ),
                         ),
                         gapW4,
-                        Text(
-                          'Sign Up',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF8C88CD),
-                            fontSize: 16,
-                            fontFamily: 'Manrope',
-                            fontWeight: FontWeight.w600,
-                            height: 0,
+                        GestureDetector(
+                          onTap: () {
+                            context.pushNamed(AppRoute.signUp.name);
+                          },
+                          child: const Text(
+                            'Sign Up',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFF8C88CD),
+                              fontSize: 16,
+                              fontFamily: 'Manrope',
+                              fontWeight: FontWeight.w600,
+                              height: 0,
+                            ),
                           ),
                         )
                       ],
