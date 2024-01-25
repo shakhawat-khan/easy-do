@@ -1,4 +1,5 @@
-import 'package:easy_do/modules/home_screen/view/home_view.dart';
+import 'package:easy_do/src/modules/home_screen/view/home_view.dart';
+import 'package:easy_do/src/modules/sign_in/view/sign_in_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-        return const HomeScreen();
+        return const SignInView();
       }));
     });
 
@@ -34,18 +35,20 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage('assets/images/splash_color.png'),
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage('assets/images/splash_color.png'),
+            ),
           ),
-        ),
-        child: const Center(
-          child: Image(
-            image: AssetImage(
-              'assets/images/splash_logo.png',
+          child: const Center(
+            child: Image(
+              image: AssetImage(
+                'assets/images/splash_logo.png',
+              ),
             ),
           ),
         ),
