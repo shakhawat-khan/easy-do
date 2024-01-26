@@ -11,10 +11,8 @@ import 'package:http/http.dart' as http;
 ///
 ///
 final ApiClient apiClient = ApiClient();
-Future<GetAllTaskModel?> getBlogByCategory({
+Future<GetAllTaskModel?> getAllTask({
   required String token,
-  required int catId,
-  required int page,
   required BuildContext context,
 }) async {
   try {
@@ -26,8 +24,9 @@ Future<GetAllTaskModel?> getBlogByCategory({
     if (response.statusCode == 200) {
       return GetAllTaskModel.fromJson(jsonDecode(response.body));
     } else {
-      AppUtils.errorToast(
-          message: 'Get Blog by category get error!', context: context);
+      if (context.mounted) {
+        AppUtils.errorToast(message: response.body, context: context);
+      }
       return null;
     }
   } on Exception catch (e) {
