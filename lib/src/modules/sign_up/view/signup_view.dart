@@ -135,9 +135,7 @@ class SignUpView extends ConsumerWidget {
                     GestureDetector(
                       onTap: () async {
                         await createAccount(
-                            mail: ref
-                                .read(textControllerProvider('signup_email'))
-                                .text,
+                            mail: ref.read(textControllerProvider('')).text,
                             name: ref
                                 .read(textControllerProvider('signup_name'))
                                 .text,

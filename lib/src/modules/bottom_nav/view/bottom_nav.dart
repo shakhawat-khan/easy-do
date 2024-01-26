@@ -1,9 +1,11 @@
 import 'package:easy_do/src/modules/home_screen/view/home_view.dart';
 import 'package:easy_do/src/modules/profile/view/profile_view.dart';
 import 'package:easy_do/src/modules/task/view/task_view.dart';
+import 'package:easy_do/src/routing/app_route.dart';
 import 'package:easy_do/src/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomNavBarPage extends StatelessWidget {
   const BottomNavBarPage({super.key});
@@ -15,7 +17,9 @@ class BottomNavBarPage extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 80.0),
         child: FloatingActionButton.extended(
           backgroundColor: HexColor('#8C88CD'),
-          onPressed: () {},
+          onPressed: () {
+            context.pushNamed(AppRoute.createTask.name);
+          },
           label: const Text(
             'Add Task',
             style: TextStyle(color: Colors.white),

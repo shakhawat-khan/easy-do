@@ -3,6 +3,7 @@ import 'package:easy_do/src/components/signin_signup_text.dart';
 
 import 'package:easy_do/src/components/sign_topbar.dart';
 import 'package:easy_do/src/constants/app_sizer.dart';
+import 'package:easy_do/src/modules/home_screen/view/home_view.dart';
 import 'package:easy_do/src/modules/sign_in/providers/sign_in_provider.dart';
 import 'package:easy_do/src/modules/sign_in/providers/signin_function.dart';
 import 'package:easy_do/src/providers/common_providers.dart';
@@ -87,27 +88,6 @@ class SignInView extends ConsumerWidget {
                     gapH28,
                     GestureDetector(
                         onTap: () async {
-                          // logSmall(
-                          //   message: ref
-                          //       .watch(
-                          //         textControllerProvider(
-                          //           'signIn_password',
-                          //         ),
-                          //       )
-                          //       .text,
-                          // );
-
-                          // logSmall(
-                          //   message:
-                          // ref
-                          //       .watch(
-                          //         textControllerProvider(
-                          //           'signIn_email',
-                          //         ),
-                          //       )
-                          //       .text,
-                          // );
-
                           await login(
                             mail: ref
                                 .watch(
@@ -125,6 +105,12 @@ class SignInView extends ConsumerWidget {
                                 .text,
                             context: context,
                           );
+                          // if (context.mounted) {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => const HomeScreen()));
+                          // }
                         },
                         child: const CusomExtendedButton(name: 'Sign in')),
                     gapH28,

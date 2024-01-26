@@ -1,42 +1,32 @@
-import 'dart:convert';
-
 import 'package:easy_do/main.dart';
-import 'package:easy_do/src/routing/app_route.dart';
 import 'package:easy_do/src/utils/api_client/api_client.dart';
 import 'package:easy_do/src/utils/api_client/remote_url.dart';
 import 'package:easy_do/src/utils/app_utils.dart';
-import 'package:easy_do/src/utils/log_message.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
 final ApiClient apiClient = ApiClient();
-Future<bool> login(
-    {required String mail,
-    required String pass,
+Future<bool> createNewTask(
+    {required String title,
+    required String description,
+    required String dueDate,
     required BuildContext context}) async {
   try {
     http.Response response = await apiClient.postData(
-      url: RemoteUrl.loginUrl,
-      body: {
-        'email': mail.trim(),
-        'password': pass.trim(),
-      },
-    );
+        url: RemoteUrl.createTask,
+        body: {
+          'title': title.trim(),
+          'description': description.trim(),
+          'dueDate': dueDate.trim(),
+        },
+        token: appUserToken);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (context.mounted) {
-        AppUtils.successToast(message: 'Login Successful', context: context);
-
-        final parsedJson = jsonDecode(response.body) as Map<String, dynamic>;
-        final token = parsedJson['token'];
-
-        logSmall(message: token);
-
-        preferences.setString('token', token);
-
-        context.goNamed(AppRoute.home.name);
+        AppUtils.successToast(message: 'New Task created', context: context);
+        context.pop();
       }
 
       // var responseBody = await json.decode(response.body);
