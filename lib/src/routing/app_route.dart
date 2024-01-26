@@ -1,3 +1,4 @@
+import 'package:easy_do/src/modules/bottom_nav/view/bottom_nav.dart';
 import 'package:easy_do/src/modules/sign_in/view/sign_in_view.dart';
 import 'package:easy_do/src/modules/sign_up/view/signup_view.dart';
 import 'package:easy_do/src/modules/splash/view/splash_view.dart';
@@ -17,7 +18,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       name: AppRoute.splash.name,
-      builder: (context, state) => const SplashScreen(),
+      builder: (context, state) => const BottomNavBarPage(),
     ),
     GoRoute(
       path: '/signIn',

@@ -3,6 +3,7 @@ import 'package:easy_do/src/components/custom_extended_button.dart';
 import 'package:easy_do/src/components/sign_topbar.dart';
 import 'package:easy_do/src/components/signin_signup_text.dart';
 import 'package:easy_do/src/constants/app_sizer.dart';
+import 'package:easy_do/src/modules/sign_up/providers/signup_function.dart';
 import 'package:easy_do/src/modules/sign_up/providers/signup_provider.dart';
 import 'package:easy_do/src/providers/common_providers.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +133,19 @@ class SignUpView extends ConsumerWidget {
                     ),
                     gapH28,
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        await createAccount(
+                            mail: ref
+                                .read(textControllerProvider('signup_email'))
+                                .text,
+                            name: ref
+                                .read(textControllerProvider('signup_name'))
+                                .text,
+                            pass: ref
+                                .read(textControllerProvider('signup_password'))
+                                .text,
+                            context: context);
+                      },
                       child: const CusomExtendedButton(
                         name: 'Sign up',
                       ),
