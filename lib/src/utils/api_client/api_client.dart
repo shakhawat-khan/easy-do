@@ -88,4 +88,57 @@ class ApiClient {
         title: 'post response url: ${Uri.parse(url)}', message: response.body);
     return response;
   }
+
+  /// delete http request supported
+  Future<http.Response> deleteData({
+    required String url,
+    String? token,
+    Map<String, String>? headers,
+    int? timeOut,
+  }) async {
+    http.Response response = await http
+        .delete(
+      Uri.parse(url),
+      headers:
+          headers ?? (token != null ? currentUserHeader(token) : _mainHeaders),
+    )
+        .timeout(
+      Duration(seconds: timeOut ?? timeoutRequest),
+      onTimeout: () {
+        return http.Response(
+            addedErrorMessage(), 408); // Replace 500 with your http code.
+      },
+    );
+    logMessage(
+        title: 'post response url: ${Uri.parse(url)}', message: response.body);
+    return response;
+  }
+
+  ///put http request supported
+  Future<http.Response> putData({
+    required String url,
+    dynamic body,
+    String? token,
+    Map<String, String>? headers,
+    int? timeOut,
+  }) async {
+    http.Response response = await http
+        .put(
+      Uri.parse(url),
+      body: jsonEncode(body),
+      headers:
+          headers ?? (token != null ? currentUserHeader(token) : _mainHeaders),
+    )
+        .timeout(
+      Duration(seconds: timeOut ?? timeoutRequest),
+      onTimeout: () {
+        return http.Response(
+            addedErrorMessage(), 408); // Replace 500 with your http code.
+      },
+    );
+    logMessage(
+        title: 'post response url: ${Uri.parse(url)}', message: response.body);
+
+    return response;
+  }
 }

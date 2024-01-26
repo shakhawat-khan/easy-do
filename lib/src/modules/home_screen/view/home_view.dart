@@ -4,16 +4,21 @@ import 'package:easy_do/src/modules/home_screen/components/task_card.dart';
 import 'package:easy_do/src/modules/home_screen/components/task_counter.dart';
 import 'package:easy_do/src/modules/home_screen/model/all_task_model.dart';
 import 'package:easy_do/src/modules/home_screen/provider/home_screen_function.dart';
+import 'package:easy_do/src/modules/home_screen/provider/home_screen_provider.dart';
+import 'package:easy_do/src/routing/app_route.dart';
 import 'package:easy_do/src/utils/helpers.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:easy_do/src/utils/log_message.dart';
 
-class HomeScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../home_screen/provider/home_screen_provider.dart';
+
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Scaffold(
         // appBar: AppBar(
@@ -99,16 +104,29 @@ class HomeScreen extends StatelessWidget {
                     );
                   } else {
                     return Expanded(
-                        child: ListView.builder(
-                      itemCount: snapshot.data?.data?.length,
-                      itemBuilder: (context, index) {
-                        return TaskCard(
-                          isComplete: snapshot.data!.data![index].completed!,
-                          datetime: snapshot.data!.data![index].dueDate!,
-                          dec: snapshot.data!.data![index].description!,
-                        );
-                      },
-                    ));
+                      child: ListView.builder(
+                        itemCount: snapshot.data?.data?.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              // logSmall(
+                              //     message: snapshot.data!.data![index].sId!);
+                              ref
+                                  .read(taskIdProvider.notifier)
+                                  .deleteId('tata');
+                              logSmall(message: ref.read(taskIdProvider));
+                              context.pushNamed(AppRoute.taskDetails.name);
+                            },
+                            child: TaskCard(
+                              isComplete:
+                                  snapshot.data!.data![index].completed!,
+                              datetime: snapshot.data!.data![index].dueDate!,
+                              dec: snapshot.data!.data![index].description!,
+                            ),
+                          );
+                        },
+                      ),
+                    );
                   }
                 },
               ),

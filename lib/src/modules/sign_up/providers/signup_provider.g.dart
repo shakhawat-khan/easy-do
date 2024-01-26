@@ -6,7 +6,7 @@ part of 'signup_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signupPasswordHash() => r'4da3cbd71972c7754930e774b50d6fe65ffce741';
+String _$signupPasswordHash() => r'794de367dc6cca4d268befa6166fe8c75ce1c86a';
 
 /// See also [SignupPassword].
 @ProviderFor(SignupPassword)
@@ -23,7 +23,7 @@ final signupPasswordProvider =
 
 typedef _$SignupPassword = AutoDisposeNotifier<bool>;
 String _$signupPassworRetypeHash() =>
-    r'e40e288f59c4faec421926e765d96e6283ecccd8';
+    r'8ba31df0b16dd7ea94af13bd9b2ab218a1901282';
 
 /// See also [SignupPassworRetype].
 @ProviderFor(SignupPassworRetype)
