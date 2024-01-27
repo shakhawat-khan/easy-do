@@ -3,6 +3,7 @@ import 'package:easy_do/src/components/date_time_picker.dart';
 import 'package:easy_do/src/components/signin_signup_text.dart';
 import 'package:easy_do/src/constants/app_sizer.dart';
 import 'package:easy_do/src/modules/create_task/provider/create_task_function.dart';
+import 'package:easy_do/src/modules/create_task/provider/create_task_provider.dart';
 import 'package:easy_do/src/providers/common_providers.dart';
 import 'package:easy_do/src/utils/log_message.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,7 @@ class CreateTaskPageView extends ConsumerWidget {
               ),
               GestureDetector(
                 onTap: () async {
+                  ref.read(isCreateLoadingProvider.notifier).state = true;
                   await createNewTask(
                       context: context,
                       description: ref
@@ -104,9 +106,24 @@ class CreateTaskPageView extends ConsumerWidget {
                       title: ref
                           .watch(textControllerProvider('newTaskTitle'))
                           .text);
+                  ref.read(isCreateLoadingProvider.notifier).state = false;
                 },
-                child: const CusomExtendedButton(
-                  name: 'Create Task',
+                child: CusomExtendedButton(
+                  state: ref.watch(isCreateLoadingProvider) == true
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const Text(
+                          'Create Task',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Manrope',
+                            fontWeight: FontWeight.w600,
+                            height: 0,
+                          ),
+                        ),
                 ),
               )
             ],

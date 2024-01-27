@@ -6,6 +6,7 @@ import 'package:easy_do/src/routing/app_route.dart';
 import 'package:easy_do/src/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,12 +24,15 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 2), () {
       // context.pushReplacementNamed(AppRoute.signIn.name);
       if (preferences.getString('token') == null) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SignInView()));
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => const SignInView()));
+        context.pushReplacementNamed(AppRoute.signIn.name);
       } else {
         appUserToken = preferences.getString('token') ?? '';
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const BottomNavBarPage()));
+
+        context.pushReplacementNamed(AppRoute.bottomNav.name);
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => const BottomNavBarPage()));
       }
     });
 

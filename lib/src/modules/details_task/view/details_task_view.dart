@@ -1,5 +1,6 @@
 import 'package:easy_do/src/constants/app_sizer.dart';
 import 'package:easy_do/src/modules/details_task/provider/details_task_function.dart';
+import 'package:easy_do/src/modules/details_task/provider/details_task_provider.dart';
 import 'package:easy_do/src/modules/home_screen/provider/home_screen_provider.dart';
 import 'package:easy_do/src/providers/common_providers.dart';
 import 'package:easy_do/src/utils/log_message.dart';
@@ -44,28 +45,54 @@ class DetailsTaskView extends ConsumerWidget {
                   ),
                   const Spacer(),
                   ref.watch(taskValueProvider)!.completed == true
-                      ? Container(
-                          height: 24,
-                          width: 30,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF61E064),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                      ? InkWell(
+                          onTap: () async {
+                            ref
+                                    .read(taskValueProvider.notifier)
+                                    .state!
+                                    .completed! ==
+                                true;
+                            await profileUpdateTask(
+                                context: context,
+                                update: false,
+                                id: ref.watch(taskValueProvider)!.sId!);
+                          },
+                          child: Container(
+                            height: 24,
+                            width: 30,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFF61E064),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            child: const Center(
+                              child: Icon(Icons.done, color: Colors.white),
                             ),
                           ),
-                          child: const Center(
-                            child: Icon(Icons.done, color: Colors.white),
-                          ),
                         )
-                      : Container(
-                          height: 24,
-                          width: 30,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFE9E9E9),
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 2, color: Color(0xFF979797)),
-                              borderRadius: BorderRadius.circular(20),
+                      : InkWell(
+                          onTap: () async {
+                            ref
+                                    .read(taskValueProvider.notifier)
+                                    .state!
+                                    .completed! ==
+                                true;
+                            await profileUpdateTask(
+                                context: context,
+                                update: true,
+                                id: ref.watch(taskValueProvider)!.sId!);
+                          },
+                          child: Container(
+                            height: 24,
+                            width: 30,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFE9E9E9),
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 2, color: Color(0xFF979797)),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                             ),
                           ),
                         )
@@ -132,7 +159,7 @@ class DetailsTaskView extends ConsumerWidget {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Color(0xFFFBBC04),
-                                  fontSize: 8,
+                                  fontSize: 12,
                                   fontFamily: 'Manrope',
                                   fontWeight: FontWeight.w500,
                                   height: 0,
@@ -193,11 +220,13 @@ class DetailsTaskView extends ConsumerWidget {
               GestureDetector(
                 onTap: () async {
                   // logSmall(message: ref.read(idValueProvider));
+                  ref.read(isDeleteTaskProvider.notifier).state = true;
 
                   await deleteTask(
                     deletetId: ref.read(taskValueProvider)!.sId!,
                     context: context,
                   );
+                  ref.read(isDeleteTaskProvider.notifier).state = false;
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -215,25 +244,27 @@ class DetailsTaskView extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(28),
                         ),
                       ),
-                      child: const Row(
-                        children: [
-                          Text(
-                            'Delete Task',
-                            style: TextStyle(
-                              color: Color(0xFF808080),
-                              fontSize: 14,
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.w500,
-                              height: 0,
+                      child: ref.watch(isDeleteTaskProvider) == true
+                          ? const Center(child: CircularProgressIndicator())
+                          : const Row(
+                              children: [
+                                Text(
+                                  'Delete Task',
+                                  style: TextStyle(
+                                    color: Color(0xFF808080),
+                                    fontSize: 14,
+                                    fontFamily: 'Manrope',
+                                    fontWeight: FontWeight.w500,
+                                    height: 0,
+                                  ),
+                                ),
+                                gapW4,
+                                Icon(
+                                  CupertinoIcons.delete_simple,
+                                  size: 14,
+                                )
+                              ],
                             ),
-                          ),
-                          gapW4,
-                          Icon(
-                            CupertinoIcons.delete_simple,
-                            size: 14,
-                          )
-                        ],
-                      ),
                     ),
                   ],
                 ),

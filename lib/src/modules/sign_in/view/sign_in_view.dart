@@ -87,32 +87,45 @@ class SignInView extends ConsumerWidget {
                     ),
                     gapH28,
                     GestureDetector(
-                        onTap: () async {
-                          await login(
-                            mail: ref
-                                .watch(
-                                  textControllerProvider(
-                                    'signIn_email',
-                                  ),
-                                )
-                                .text,
-                            pass: ref
-                                .watch(
-                                  textControllerProvider(
-                                    'signIn_password',
-                                  ),
-                                )
-                                .text,
-                            context: context,
-                          );
-                          // if (context.mounted) {
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) => const HomeScreen()));
-                          // }
-                        },
-                        child: const CusomExtendedButton(name: 'Sign in')),
+                      onTap: () async {
+                        await login(
+                          mail: ref
+                              .watch(
+                                textControllerProvider(
+                                  'signIn_email',
+                                ),
+                              )
+                              .text,
+                          pass: ref
+                              .watch(
+                                textControllerProvider(
+                                  'signIn_password',
+                                ),
+                              )
+                              .text,
+                          context: context,
+                        );
+                        // if (context.mounted) {
+                        //   Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) => const HomeScreen()));
+                        // }
+                      },
+                      child: const CusomExtendedButton(
+                        state: Text(
+                          'Sign In',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Manrope',
+                            fontWeight: FontWeight.w600,
+                            height: 0,
+                          ),
+                        ),
+                      ),
+                    ),
                     gapH28,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

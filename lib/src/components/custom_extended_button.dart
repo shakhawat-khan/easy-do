@@ -2,10 +2,10 @@ import 'package:easy_do/src/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
 class CusomExtendedButton extends StatelessWidget {
-  final String name;
+  final Widget state;
   const CusomExtendedButton({
     super.key,
-    required this.name,
+    required this.state,
   });
 
   @override
@@ -21,19 +21,7 @@ class CusomExtendedButton extends StatelessWidget {
           '#8C88CD',
         ),
       ),
-      child: Center(
-        child: Text(
-          name,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontFamily: 'Manrope',
-            fontWeight: FontWeight.w600,
-            height: 0,
-          ),
-        ),
-      ),
+      child: Center(child: state),
     );
   }
 }

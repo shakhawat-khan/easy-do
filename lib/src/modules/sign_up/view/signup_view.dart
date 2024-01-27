@@ -144,8 +144,16 @@ class SignUpView extends ConsumerWidget {
                                 .text,
                             context: context);
                       },
-                      child: const CusomExtendedButton(
-                        name: 'Sign up',
+                      child: const Text(
+                        'Sign Up',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'Manrope',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
                       ),
                     ),
                     gapH64,
