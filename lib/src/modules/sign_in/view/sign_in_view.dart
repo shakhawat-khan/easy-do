@@ -1,3 +1,4 @@
+import 'package:easy_do/main.dart';
 import 'package:easy_do/src/components/custom_extended_button.dart';
 import 'package:easy_do/src/components/signin_signup_text.dart';
 
@@ -88,6 +89,7 @@ class SignInView extends ConsumerWidget {
                     gapH28,
                     GestureDetector(
                       onTap: () async {
+                        ref.read(isLoadingSignIn.notifier).state = true;
                         await login(
                           mail: ref
                               .watch(
@@ -105,6 +107,8 @@ class SignInView extends ConsumerWidget {
                               .text,
                           context: context,
                         );
+                        ref.read(isLoadingSignIn.notifier).state = false;
+
                         // if (context.mounted) {
                         //   Navigator.push(
                         //       context,
@@ -112,18 +116,22 @@ class SignInView extends ConsumerWidget {
                         //           builder: (context) => const HomeScreen()));
                         // }
                       },
-                      child: const CusomExtendedButton(
-                        state: Text(
-                          'Sign In',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'Manrope',
-                            fontWeight: FontWeight.w600,
-                            height: 0,
-                          ),
-                        ),
+                      child: CusomExtendedButton(
+                        state: ref.watch(isLoadingSignIn) == true
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Sign In',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Manrope',
+                                  fontWeight: FontWeight.w600,
+                                  height: 0,
+                                ),
+                              ),
                       ),
                     ),
                     gapH28,

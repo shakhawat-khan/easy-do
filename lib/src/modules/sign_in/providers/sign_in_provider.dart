@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_in_provider.g.dart';
@@ -13,3 +14,5 @@ class SignInProvider extends _$SignInProvider {
     state = !state;
   }
 }
+
+final isLoadingSignIn = StateProvider<bool?>((ref) => null);

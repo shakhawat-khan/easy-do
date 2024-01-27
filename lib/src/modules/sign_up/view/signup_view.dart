@@ -134,8 +134,11 @@ class SignUpView extends ConsumerWidget {
                     gapH28,
                     GestureDetector(
                       onTap: () async {
+                        ref.read(isLoadingSignUp.notifier).state = true;
                         await createAccount(
-                            mail: ref.read(textControllerProvider('')).text,
+                            mail: ref
+                                .read(textControllerProvider('signup_email'))
+                                .text,
                             name: ref
                                 .read(textControllerProvider('signup_name'))
                                 .text,
@@ -143,17 +146,24 @@ class SignUpView extends ConsumerWidget {
                                 .read(textControllerProvider('signup_password'))
                                 .text,
                             context: context);
+                        ref.read(isLoadingSignUp.notifier).state = false;
                       },
-                      child: const Text(
-                        'Sign Up',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Manrope',
-                          fontWeight: FontWeight.w600,
-                          height: 0,
-                        ),
+                      child: CusomExtendedButton(
+                        state: ref.watch(isLoadingSignUp) == true
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Sign Up',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Manrope',
+                                  fontWeight: FontWeight.w600,
+                                  height: 0,
+                                ),
+                              ),
                       ),
                     ),
                     gapH64,

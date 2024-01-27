@@ -26,3 +26,5 @@ class SignupPassworRetype extends _$SignupPassworRetype {
     state = !state;
   }
 }
+
+final isLoadingSignUp = StateProvider<bool?>((ref) => null);

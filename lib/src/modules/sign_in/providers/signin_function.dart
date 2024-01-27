@@ -27,6 +27,7 @@ Future<bool> login(
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (context.mounted) {
+        appUserToken = preferences.getString('token') ?? '';
         AppUtils.successToast(message: 'Login Successful', context: context);
 
         final parsedJson = jsonDecode(response.body) as Map<String, dynamic>;
@@ -35,8 +36,8 @@ Future<bool> login(
         logSmall(message: token);
 
         preferences.setString('token', token);
-
-        context.goNamed(AppRoute.home.name);
+        appUserToken = preferences.getString('token') ?? '';
+        context.goNamed(AppRoute.bottomNav.name);
       }
 
       // var responseBody = await json.decode(response.body);

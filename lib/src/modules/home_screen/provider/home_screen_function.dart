@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_do/main.dart';
 import 'package:easy_do/src/modules/home_screen/model/all_task_model.dart';
 import 'package:easy_do/src/modules/home_screen/provider/home_screen_provider.dart';
 import 'package:easy_do/src/providers/common_providers.dart';
@@ -21,7 +22,7 @@ class ApiServicesHomeScreen {
     required String token,
     BuildContext? context,
   }) async {
-    logSmall(message: token);
+    // logSmall(message: token);
     try {
       http.Response response = await apiClient.getData(
         url: RemoteUrl.createTask,
