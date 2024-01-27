@@ -8,7 +8,15 @@ import 'package:easy_do/src/modules/splash/view/splash_view.dart';
 
 import 'package:go_router/go_router.dart';
 
-enum AppRoute { home, splash, signIn, signUp, createTask, taskDetails }
+enum AppRoute {
+  home,
+  splash,
+  signIn,
+  signUp,
+  createTask,
+  taskDetails,
+  bottomNav
+}
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -42,6 +50,11 @@ final GoRouter router = GoRouter(
       path: '/taskDetails',
       name: AppRoute.taskDetails.name,
       builder: (context, state) => const DetailsTaskView(),
+    ),
+    GoRoute(
+      path: '/bottomNav',
+      name: AppRoute.bottomNav.name,
+      builder: (context, state) => const BottomNavBarPage(),
     ),
   ],
 );

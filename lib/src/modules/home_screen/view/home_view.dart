@@ -5,8 +5,10 @@ import 'package:easy_do/src/modules/home_screen/components/task_counter.dart';
 import 'package:easy_do/src/modules/home_screen/model/all_task_model.dart';
 import 'package:easy_do/src/modules/home_screen/provider/home_screen_function.dart';
 import 'package:easy_do/src/modules/home_screen/provider/home_screen_provider.dart';
+import 'package:easy_do/src/providers/common_providers.dart';
 import 'package:easy_do/src/routing/app_route.dart';
 import 'package:easy_do/src/utils/helpers.dart';
+import 'package:easy_do/src/utils/hex_color.dart';
 import 'package:easy_do/src/utils/log_message.dart';
 
 import 'package:flutter/material.dart';
@@ -14,11 +16,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../home_screen/provider/home_screen_provider.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final data = ref.watch(userDataProvider);
     return SafeArea(
       child: Scaffold(
         // appBar: AppBar(
@@ -70,13 +78,17 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   TaskCounter(
                     assetPath: Helpers.incompleteImage,
-                    number: '12',
+                    number: ref.watch(incompleteTaskProvider) == null
+                        ? '0'
+                        : ref.watch(incompleteTaskProvider)!,
                     state: 'Incomplete',
                   ),
                   TaskCounter(
                       state: 'Complete',
                       assetPath: Helpers.completeImage,
-                      number: '10')
+                      number: ref.watch(completeTaskProvider) == null
+                          ? '0'
+                          : ref.watch(completeTaskProvider)!)
                 ],
               ),
               gapH28,
@@ -91,47 +103,69 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
               gapH16,
-              FutureBuilder<GetAllTaskModel?>(
-                future: getAllTask(token: appUserToken, context: context),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        'Error: ${snapshot.error}',
-                      ),
-                    );
-                  } else {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: snapshot.data?.data?.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              // logSmall(
-                              //     message: snapshot.data!.data![index].sId!);
-                              ref
-                                  .read(taskIdProvider.notifier)
-                                  .deleteId('tata');
-                              logSmall(message: ref.read(taskIdProvider));
-                              context.pushNamed(AppRoute.taskDetails.name);
-                            },
-                            child: TaskCard(
-                              isComplete:
-                                  snapshot.data!.data![index].completed!,
-                              datetime: snapshot.data!.data![index].dueDate!,
-                              dec: snapshot.data!.data![index].description!,
-                            ),
-                          );
+              data.when(data: (data) {
+                Future.delayed(const Duration(seconds: 1)).then((val) {
+                  // Your logic here
+                  ref.read(listOfTaskProvider.notifier).state = data!.data;
+                  incompleteCompleteTask(ref: ref);
+                });
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: data!.data!.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          logSmall(message: 'message');
+
+                          ref.read(taskValueProvider.notifier).state = Data(
+                              completed: data.data![index].completed!,
+                              dueDate: data.data![index].dueDate,
+                              description: data.data![index].description!,
+                              title: data.data![index].title!,
+                              sId: data.data![index].sId);
+
+                          context
+                              .pushNamed(AppRoute.taskDetails.name)
+                              .then((value) {
+                            ref.refresh(userDataProvider);
+                          });
                         },
-                      ),
-                    );
-                  }
-                },
-              ),
+                        child: TaskCard(
+                          isComplete: data.data![index].completed!,
+                          datetime: data.data![index].dueDate!,
+                          dec: data.data![index].description!,
+                          title: data.data![index].title!,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }, error: (err, s) {
+                return Text(s.toString());
+              }, loading: () {
+                return const Center(child: CircularProgressIndicator());
+              }),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: HexColor('#8C88CD'),
+          onPressed: () {
+            context.pushNamed(AppRoute.createTask.name).then((value) {
+              ref.refresh(userDataProvider);
+            });
+          },
+          label: const Text(
+            'Add Task',
+            style: TextStyle(color: Colors.white),
+          ),
+          icon: const Icon(
+            Icons.add,
+            size: 24,
+            color: Colors.white,
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         ),
       ),
     );

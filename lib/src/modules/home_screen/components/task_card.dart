@@ -7,12 +7,14 @@ class TaskCard extends StatelessWidget {
   final bool isComplete;
   final String datetime;
   final String dec;
+  final String title;
 
   const TaskCard({
     super.key,
     required this.isComplete,
     required this.datetime,
     required this.dec,
+    required this.title,
   });
 
   @override
@@ -38,10 +40,10 @@ class TaskCard extends StatelessWidget {
               gapH12,
               Row(
                 children: [
-                  const Text(
-                    'Mentorship Session',
+                  Text(
+                    title,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF282B31),
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -109,7 +111,7 @@ class TaskCard extends StatelessWidget {
                     child: isComplete == true
                         ? Container(
                             width: 90,
-                            height: 30,
+                            height: 40,
                             padding: const EdgeInsets.all(5),
                             decoration: ShapeDecoration(
                               color: const Color(0xFFEFFFEF),
@@ -122,7 +124,7 @@ class TaskCard extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color(0xFF61E064),
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w500,
                                 height: 0,
                               ),
@@ -145,10 +147,10 @@ class TaskCard extends StatelessWidget {
               gapH24,
               SizedBox(
                 width: MediaQuery.sizeOf(context).width,
-                child: const Text(
+                child: Text(
                   maxLines: 2,
-                  'Explore the power of our latest app feature - "Product Meeting." Effortlessly schedule and manage crucial product discussions in one central space. Collaborate seamlessly, set agenda items, and keep your team aligned for successful product development. Elevate your productivity with this intuitive feature designed to streamline your product meetings like never before.',
-                  style: TextStyle(
+                  dec,
+                  style: const TextStyle(
                     overflow: TextOverflow.ellipsis,
                     color: Color(0xFF5B5B5B),
                     fontSize: 14,

@@ -7,33 +7,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class BottomNavBarPage extends StatelessWidget {
+class BottomNavBarPage extends StatefulWidget {
   const BottomNavBarPage({super.key});
 
   @override
+  State<BottomNavBarPage> createState() => _BottomNavBarPageState();
+}
+
+class _BottomNavBarPageState extends State<BottomNavBarPage> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 80.0),
-        child: FloatingActionButton.extended(
-          backgroundColor: HexColor('#8C88CD'),
-          onPressed: () {
-            context.pushNamed(AppRoute.createTask.name);
-          },
-          label: const Text(
-            'Add Task',
-            style: TextStyle(color: Colors.white),
-          ),
-          icon: const Icon(
-            Icons.add,
-            size: 24,
-            color: Colors.white,
-          ),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        ),
-      ),
-      body: const DefaultTabController(
+    return const Scaffold(
+      body: DefaultTabController(
         length: 3,
         child: Stack(
           children: <Widget>[

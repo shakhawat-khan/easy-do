@@ -1,10 +1,12 @@
 import 'package:easy_do/src/constants/app_sizer.dart';
 import 'package:easy_do/src/modules/details_task/provider/details_task_function.dart';
 import 'package:easy_do/src/modules/home_screen/provider/home_screen_provider.dart';
+import 'package:easy_do/src/providers/common_providers.dart';
 import 'package:easy_do/src/utils/log_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import '../../home_screen/provider/home_screen_provider.dart';
 
 class DetailsTaskView extends ConsumerWidget {
@@ -12,6 +14,7 @@ class DetailsTaskView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    DateTime date = DateTime.parse(ref.watch(taskValueProvider)!.dueDate!);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -24,10 +27,10 @@ class DetailsTaskView extends ConsumerWidget {
               gapH12,
               Row(
                 children: [
-                  const Text(
-                    'Product Meeting',
+                  Text(
+                    ref.watch(taskValueProvider)!.title!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF282B31),
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -40,19 +43,32 @@ class DetailsTaskView extends ConsumerWidget {
                     color: Colors.grey,
                   ),
                   const Spacer(),
-                  Container(
-                    height: 24,
-                    width: 30,
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFF61E064),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.done, color: Colors.white),
-                    ),
-                  ),
+                  ref.watch(taskValueProvider)!.completed == true
+                      ? Container(
+                          height: 24,
+                          width: 30,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF61E064),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: const Center(
+                            child: Icon(Icons.done, color: Colors.white),
+                          ),
+                        )
+                      : Container(
+                          height: 24,
+                          width: 30,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFFE9E9E9),
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 2, color: Color(0xFF979797)),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        )
                 ],
               ),
               gapH16,
@@ -64,39 +80,67 @@ class DetailsTaskView extends ConsumerWidget {
                     size: 14,
                   ),
                   gapW8,
-                  const Text(
-                    '20 JAN 2024',
+                  Text(
+                    DateFormat('MMMM d, yyyy').format(date),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF979797),
                       fontSize: 12,
-                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.w400,
                       height: 0,
                     ),
                   ),
                   gapW16,
-                  Container(
-                    width: 90,
-                    height: 30,
-                    padding: const EdgeInsets.all(5),
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFEFFFEF),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: const Text(
-                      'Complete',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFF61E064),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                      ),
-                    ),
-                  ),
+                  ref.watch(taskValueProvider)!.completed == true
+                      ? Container(
+                          width: 90,
+                          height: 30,
+                          padding: const EdgeInsets.all(5),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFFEFFFEF),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          child: const Text(
+                            'Complete',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFF61E064),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ))
+                      : Container(
+                          width: 90,
+                          height: 30,
+                          padding: const EdgeInsets.all(5),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFFFFFAEC),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Incomplete',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFFFBBC04),
+                                  fontSize: 8,
+                                  fontFamily: 'Manrope',
+                                  fontWeight: FontWeight.w500,
+                                  height: 0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                 ],
               ),
               gapH16,
@@ -120,7 +164,7 @@ class DetailsTaskView extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(14),
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,8 +172,8 @@ class DetailsTaskView extends ConsumerWidget {
                           Expanded(
                             child: SizedBox(
                               child: Text(
-                                'Explore the power of our latest app feature - "Product Meeting." Effortlessly schedule and manage crucial product discussions in one central space. Collaborate seamlessly, set agenda items, and keep your team aligned for successful product development. Elevate your productivity with this intuitive feature designed to streamline your product meetings like never before.',
-                                style: TextStyle(
+                                ref.watch(taskValueProvider)!.description!,
+                                style: const TextStyle(
                                   color: Color(0xFF5B5B5B),
                                   fontSize: 14,
                                   fontFamily: 'Manrope',
@@ -148,12 +192,12 @@ class DetailsTaskView extends ConsumerWidget {
               gapH12,
               GestureDetector(
                 onTap: () async {
-                  logSmall(message: ref.read(taskIdProvider));
+                  // logSmall(message: ref.read(idValueProvider));
 
-                  // await deleteTask(
-                  //   deletetId: ref.read(taskIdProvider),
-                  //   context: context,
-                  // );
+                  await deleteTask(
+                    deletetId: ref.read(taskValueProvider)!.sId!,
+                    context: context,
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -171,11 +215,11 @@ class DetailsTaskView extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(28),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Text(
-                            ref.watch(taskIdProvider),
-                            style: const TextStyle(
+                            'Delete Task',
+                            style: TextStyle(
                               color: Color(0xFF808080),
                               fontSize: 14,
                               fontFamily: 'Manrope',
@@ -184,7 +228,7 @@ class DetailsTaskView extends ConsumerWidget {
                             ),
                           ),
                           gapW4,
-                          const Icon(
+                          Icon(
                             CupertinoIcons.delete_simple,
                             size: 14,
                           )

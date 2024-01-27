@@ -1,4 +1,6 @@
 import 'package:easy_do/main.dart';
+import 'package:easy_do/src/modules/home_screen/provider/home_screen_function.dart';
+import 'package:easy_do/src/routing/app_route.dart';
 import 'package:easy_do/src/utils/api_client/api_client.dart';
 import 'package:easy_do/src/utils/api_client/remote_url.dart';
 import 'package:easy_do/src/utils/app_utils.dart';
@@ -21,8 +23,12 @@ Future<bool?> deleteTask({
       if (context.mounted) {
         AppUtils.successToast(
             message: 'Task Delete Successfully', context: context);
+
+        context.goNamed(AppRoute.bottomNav.name);
+        context.pop();
         context.pop();
       }
+
       return true;
     } else {
       if (context.mounted) {
