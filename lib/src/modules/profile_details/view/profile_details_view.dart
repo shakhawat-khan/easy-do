@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:easy_do/src/components/custom_extended_button.dart';
 import 'package:easy_do/src/components/signin_signup_text.dart';
 import 'package:easy_do/src/constants/app_sizer.dart';
 import 'package:easy_do/src/modules/profile_details/provider/profile_details_function.dart';
+import 'package:easy_do/src/modules/profile_details/provider/profile_details_provider.dart';
 import 'package:easy_do/src/providers/common_providers.dart';
+import 'package:easy_do/src/services/api_client/api_client.dart';
 import 'package:easy_do/src/utils/helpers.dart';
+import 'package:easy_do/src/utils/log_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,18 +45,36 @@ class ProfileDetailsView extends ConsumerWidget {
                       children: [
                         Stack(
                           children: [
-                            CircleAvatar(
-                              radius: 80, // Adjust radius as needed
-                              backgroundColor:
-                                  Colors.black, // Set the background color
-                              backgroundImage: AssetImage(Helpers.demoUser),
-                            ),
-                            const Positioned(
+                            ref.watch(setImageProvider) == null
+                                ? CircleAvatar(
+                                    radius: 80, // Adjust radius as needed
+                                    backgroundColor: Colors
+                                        .black, // Set the background color
+                                    backgroundImage:
+                                        AssetImage(Helpers.demoUser),
+                                  )
+                                : CircleAvatar(
+                                    radius: 80,
+                                    backgroundImage: FileImage(
+                                      File(ref.watch(setImageProvider)!.path),
+                                    ),
+                                  ),
+                            Positioned(
                               bottom: 0,
                               right: 0,
-                              child: Icon(
-                                Icons.camera_alt_outlined,
-                                size: 30,
+                              child: InkWell(
+                                onTap: () async {
+                                  ref.read(setImageProvider.notifier).state =
+                                      await getImage();
+
+                                  logSmall(
+                                      message:
+                                          ref.read(setImageProvider)!.path);
+                                },
+                                child: const Icon(
+                                  Icons.camera_alt_outlined,
+                                  size: 30,
+                                ),
                               ),
                             ),
                           ],
@@ -94,18 +117,26 @@ class ProfileDetailsView extends ConsumerWidget {
                     gapH24,
                     GestureDetector(
                       onTap: () async {
-                        await profileUpdate(
-                          context: context,
-                          age: ref
-                              .read(textControllerProvider('profile_age'))
-                              .text,
-                          email: ref
-                              .read(textControllerProvider('profile_email'))
-                              .text,
-                          name: ref
-                              .read(textControllerProvider('profile_name'))
-                              .text,
-                        );
+                        // await profileUpdate(
+                        //   context: context,
+                        //   age: ref
+                        //       .read(textControllerProvider('profile_age'))
+                        //       .text,
+                        //   email: ref
+                        //       .read(textControllerProvider('profile_email'))
+                        //       .text,
+                        //   name: ref
+                        //       .read(textControllerProvider('profile_name'))
+                        //       .text,
+                        // );
+
+                        if (ref.watch(setImageProvider) != null) {
+                          // await profilePictureUpdate(
+                          //     image: ref.watch(setImageProvider)!.path);
+
+                          apiClient.asyncFileUpload(
+                              File(ref.watch(setImageProvider)!.path));
+                        }
                       },
                       child: const CusomExtendedButton(
                         state: Text(

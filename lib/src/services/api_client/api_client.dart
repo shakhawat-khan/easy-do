@@ -1,5 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:easy_do/main.dart';
+import 'package:easy_do/src/services/api_client/api_request_type.dart';
+import 'package:easy_do/src/services/api_client/multipart_file_with_name.dart';
+import 'package:easy_do/src/services/api_client/remote_url.dart';
 import 'package:easy_do/src/utils/log_message.dart';
 import 'package:http/http.dart' as http;
 
@@ -140,5 +145,123 @@ class ApiClient {
         title: 'post response url: ${Uri.parse(url)}', message: response.body);
 
     return response;
+  }
+
+  ///Multipart http request for image with from data
+  Future<http.Response> multipartHttpRequest({
+    required String url,
+    required ApiRequestType apiRequestType,
+    required String? token,
+    Map<String, String>? fields,
+    required Map<String, MultipartFileWithName> filePaths,
+    int? timeOut,
+  }) async {
+    final request = http.MultipartRequest(
+      ApiRequestTypeString.getApiRequestString(
+        apiRequestType: apiRequestType,
+      ),
+      Uri.parse(url),
+    );
+
+    for (int i = 0; i < filePaths.length; i++) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          filePaths.keys.elementAt(i),
+          filePaths.values.elementAt(i).filePath,
+        ),
+      );
+    }
+
+    logSmall(message: filePaths);
+
+    filePaths.forEach((key, value) async {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          key,
+          value.filePath,
+        ),
+      );
+    });
+
+    if (fields != null) {
+      request.fields.addAll(fields);
+    }
+
+    request.headers.addAll(
+      token != null
+          ? multipartHeaderWithToken(token)
+          : multipartHeaderWithoutToken(),
+    );
+
+    logMessage(title: 'request header', message: request.headers);
+    logMessage(title: 'request fields', message: request.fields);
+    logMessage(title: 'request files', message: request.files);
+
+    var response = await request.send().timeout(
+      Duration(seconds: timeOut ?? timeoutRequest),
+      onTimeout: () {
+        return streamTimeOutResponse(
+          error: 'Request Time out. Please try again!',
+        ); // Replace 500 with your http code.
+      },
+    );
+    var finalResponse = await http.Response.fromStream(response);
+
+    logMessage(title: 'final response', message: finalResponse.body);
+
+    return finalResponse;
+  }
+
+  http.StreamedResponse streamTimeOutResponse({
+    required String error,
+  }) {
+    Map<String, dynamic> body = {
+      'any': 'value',
+      'error': error,
+    };
+
+    int statusCode = 408;
+    String json = jsonEncode(body);
+
+    return http.StreamedResponse(
+      Stream.value(json.codeUnits),
+      statusCode,
+    );
+  }
+
+  static Map<String, String> multipartHeaderWithToken(String token) {
+    Map<String, String> header = {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    };
+    return header;
+  }
+
+  static Map<String, String> multipartHeaderWithoutToken() {
+    Map<String, String> header = {
+      'Content-Type': 'multipart/form-data',
+      'Accept': 'application/json',
+    };
+    return header;
+  }
+
+  asyncFileUpload(File file) async {
+    //create multipart request for POST or PATCH method
+    var request =
+        http.MultipartRequest("POST", Uri.parse(RemoteUrl.profileImage));
+    //add text fields
+    //  request.fields["text_field"] = text;
+    //create multipart using filepath, string or bytes
+    var pic = await http.MultipartFile.fromPath("avatar", file.path);
+    request.headers.addAll(multipartHeaderWithToken(appUserToken));
+    //add multipart to request
+    request.files.add(pic);
+    var response = await request.send();
+
+    //Get the response from the server
+    var responseData = await response.stream.toBytes();
+    var responseString = String.fromCharCodes(responseData);
+    print(responseString);
   }
 }

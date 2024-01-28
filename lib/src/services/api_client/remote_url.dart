@@ -6,4 +6,5 @@ class RemoteUrl {
   static String createUserUrl = '${baseUrl}user/register/';
   static String createTask = '${baseUrl}task/';
   static String profileInfo = '${baseUrl}user/me';
+  static String profileImage = '${baseUrl}user/me/avatar';
 }

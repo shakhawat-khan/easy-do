@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:easy_do/src/modules/create_task/provider/create_task_function.dart';
 import 'package:easy_do/src/modules/profile/model/profile_model.dart';
-import 'package:easy_do/src/utils/api_client/remote_url.dart';
+import 'package:easy_do/src/services/api_client/remote_url.dart';
 import 'package:easy_do/src/utils/log_message.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

@@ -1,8 +1,8 @@
 import 'package:easy_do/main.dart';
 import 'package:easy_do/src/modules/create_task/provider/create_task_provider.dart';
 import 'package:easy_do/src/routing/app_route.dart';
-import 'package:easy_do/src/utils/api_client/api_client.dart';
-import 'package:easy_do/src/utils/api_client/remote_url.dart';
+import 'package:easy_do/src/services/api_client/api_client.dart';
+import 'package:easy_do/src/services/api_client/remote_url.dart';
 import 'package:easy_do/src/utils/app_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
