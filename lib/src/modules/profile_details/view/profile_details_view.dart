@@ -139,10 +139,12 @@ class ProfileDetailsView extends ConsumerWidget {
                         );
 
                         if (ref.watch(setImageProvider) != null) {
-                          apiClient.asyncFileUpload(
-                            context: context,
-                            file: File(ref.watch(setImageProvider)!.path),
-                          );
+                          if (context.mounted) {
+                            await apiClient.asyncFileUpload(
+                              context: context,
+                              file: File(ref.watch(setImageProvider)!.path),
+                            );
+                          }
                         }
 
                         ref.read(isProfileUpdateLoading.notifier).state = false;

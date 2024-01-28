@@ -248,7 +248,8 @@ class ApiClient {
     return header;
   }
 
-  asyncFileUpload({required File file, required BuildContext context}) async {
+  Future asyncFileUpload(
+      {required File file, required BuildContext context}) async {
     //create multipart request for POST or PATCH method
     var request =
         http.MultipartRequest("POST", Uri.parse(RemoteUrl.profileImage));

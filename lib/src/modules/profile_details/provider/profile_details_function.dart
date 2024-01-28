@@ -74,7 +74,11 @@ Future<bool?> profilePictureUpdate(
 
 Future<XFile?> getImage() async {
   final ImagePicker picker = ImagePicker();
-  final XFile? image = await picker.pickImage(source: ImageSource.camera);
+  final XFile? image = await picker.pickImage(
+    source: ImageSource.camera,
+    maxHeight: 480,
+    maxWidth: 640,
+  );
 
   return image;
 }

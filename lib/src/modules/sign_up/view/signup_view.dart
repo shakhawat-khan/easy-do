@@ -170,15 +170,15 @@ class SignUpView extends ConsumerWidget {
                       GestureDetector(
                         onTap: () async {
                           final isValidate =
-                              formKeySignin.currentState!.validate();
+                              formKeySignup.currentState!.validate();
 
                           if (isValidate == true &&
                               ref
-                                      .read(textControllerProvider(
+                                      .watch(textControllerProvider(
                                           'signup_password'))
                                       .text ==
                                   ref
-                                      .read(textControllerProvider(
+                                      .watch(textControllerProvider(
                                           'signup_retypePassword'))
                                       .text) {
                             ref.read(isLoadingSignUp.notifier).state = true;

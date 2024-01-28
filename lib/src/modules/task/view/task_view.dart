@@ -36,19 +36,6 @@ class TaskView extends ConsumerWidget {
                   return GestureDetector(
                     onTap: () {
                       logSmall(message: 'message');
-
-                      // ref.read(taskValueProvider.notifier).state = Data(
-                      //     completed: data[index].completed!,
-                      //     dueDate: data[index].dueDate,
-                      //     description: data[index].description!,
-                      //     title: data[index].title!,
-                      //     sId: data[index].sId);
-
-                      // context
-                      //     .pushNamed(AppRoute.taskDetails.name)
-                      //     .then((value) {
-                      //   ref.refresh(userTaskDataProvider);
-                      // });
                     },
                     child: TaskCard(
                       isComplete: data![index].completed!,
