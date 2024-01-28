@@ -14,7 +14,7 @@ class AppUtils {
   ///
   /// password validation
   static bool isValidPassword({required String password}) {
-    if (password.isEmpty || password.length < 6) {
+    if (password.isEmpty || password.length < 7) {
       return false;
     }
     return true;
