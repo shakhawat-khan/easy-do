@@ -22,3 +22,5 @@ final getAllTaskResponse = StateProvider<GetAllTaskModel?>((ref) => null);
 final listOfTaskProvider = StateProvider<List<Data>?>((ref) => null);
 
 final listOfProfiledataProvider = StateProvider<ProfileModel?>((ref) => null);
+
+final profileImageUnitListProvider = StateProvider<Uint8List?>((ref) => null);

@@ -46,13 +46,20 @@ class ProfileDetailsView extends ConsumerWidget {
                         Stack(
                           children: [
                             ref.watch(setImageProvider) == null
-                                ? CircleAvatar(
-                                    radius: 80, // Adjust radius as needed
-                                    backgroundColor: Colors
-                                        .black, // Set the background color
-                                    backgroundImage:
-                                        AssetImage(Helpers.demoUser),
-                                  )
+                                ? ref.watch(profileImageUnitListProvider) ==
+                                        null
+                                    ? CircleAvatar(
+                                        radius: 80, // Adjust radius as needed
+                                        backgroundColor: Colors
+                                            .black, // Set the background color
+                                        backgroundImage:
+                                            AssetImage(Helpers.demoUser),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 80,
+                                        backgroundImage: MemoryImage(ref.watch(
+                                            profileImageUnitListProvider)!),
+                                      )
                                 : CircleAvatar(
                                     radius: 80,
                                     backgroundImage: FileImage(
@@ -117,39 +124,43 @@ class ProfileDetailsView extends ConsumerWidget {
                     gapH24,
                     GestureDetector(
                       onTap: () async {
-                        // await profileUpdate(
-                        //   context: context,
-                        //   age: ref
-                        //       .read(textControllerProvider('profile_age'))
-                        //       .text,
-                        //   email: ref
-                        //       .read(textControllerProvider('profile_email'))
-                        //       .text,
-                        //   name: ref
-                        //       .read(textControllerProvider('profile_name'))
-                        //       .text,
-                        // );
+                        ref.read(isProfileUpdateLoading.notifier).state == true;
+                        await profileUpdate(
+                          context: context,
+                          age: ref
+                              .read(textControllerProvider('profile_age'))
+                              .text,
+                          email: ref
+                              .read(textControllerProvider('profile_email'))
+                              .text,
+                          name: ref
+                              .read(textControllerProvider('profile_name'))
+                              .text,
+                        );
 
                         if (ref.watch(setImageProvider) != null) {
-                          // await profilePictureUpdate(
-                          //     image: ref.watch(setImageProvider)!.path);
-
                           apiClient.asyncFileUpload(
-                              File(ref.watch(setImageProvider)!.path));
+                            context: context,
+                            file: File(ref.watch(setImageProvider)!.path),
+                          );
                         }
+
+                        ref.read(isProfileUpdateLoading.notifier).state = false;
                       },
-                      child: const CusomExtendedButton(
-                        state: Text(
-                          'Update',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'Manrope',
-                            fontWeight: FontWeight.w600,
-                            height: 0,
-                          ),
-                        ),
+                      child: CusomExtendedButton(
+                        state: ref.watch(isProfileUpdateLoading) == true
+                            ? const CircularProgressIndicator()
+                            : const Text(
+                                'Update',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Manrope',
+                                  fontWeight: FontWeight.w600,
+                                  height: 0,
+                                ),
+                              ),
                       ),
                     ),
                   ],

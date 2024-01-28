@@ -56,9 +56,12 @@ Future<bool> profileUpdateTask({
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (context!.mounted) {
-        AppUtils.successToast(
-            message: 'Task Update successfully', context: context);
-        context.pop();
+        await Future.delayed(const Duration(seconds: 1));
+        if (context.mounted) {
+          AppUtils.successToast(
+              message: 'Task Update successfully', context: context);
+          context.pop();
+        }
       }
 
       return true;

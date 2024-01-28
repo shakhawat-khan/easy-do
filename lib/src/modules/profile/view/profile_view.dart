@@ -1,8 +1,10 @@
+import 'package:easy_do/main.dart';
 import 'package:easy_do/src/constants/app_sizer.dart';
 import 'package:easy_do/src/modules/profile/provider/profile_function.dart';
 import 'package:easy_do/src/modules/profile/provider/profile_provider.dart';
 import 'package:easy_do/src/providers/common_providers.dart';
 import 'package:easy_do/src/routing/app_route.dart';
+import 'package:easy_do/src/utils/helpers.dart';
 import 'package:easy_do/src/utils/log_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,19 +74,37 @@ class ProfileView extends ConsumerWidget {
                     child: Row(
                       children: [
                         profileImage.when(data: (data) {
+                          Future.delayed(const Duration(seconds: 1))
+                              .then((val) {
+                            // Your logic here
+                            if (data != null) {
+                              ref
+                                  .read(profileImageUnitListProvider.notifier)
+                                  .state = data;
+                            }
+                          });
+
                           return Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: MemoryImage(data!),
-                                  ),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      width: 2,
-                                      color: const Color(0xFF8C88CD))));
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: MemoryImage(data!),
+                              ),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                width: 2,
+                                color: const Color(0xFF8C88CD),
+                              ),
+                            ),
+                          );
                         }, error: (err, s) {
-                          return Text(s.toString());
+                          return CircleAvatar(
+                            radius: 30, // Adjust radius as needed
+                            backgroundColor:
+                                Colors.black, // Set the background color
+                            backgroundImage: AssetImage(Helpers.demoUser),
+                          );
                         }, loading: () {
                           return const CircularProgressIndicator();
                         }),
@@ -213,8 +233,9 @@ class ProfileView extends ConsumerWidget {
 
               InkWell(
                 onTap: () async {
-                  // logSmall(message: 'message');
-                  // await fetchImage();
+                  logSmall(message: 'message');
+                  preferences.setString('token', '');
+                  context.pushReplacementNamed(AppRoute.signIn.name);
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width,

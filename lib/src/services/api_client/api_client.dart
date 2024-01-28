@@ -6,6 +6,8 @@ import 'package:easy_do/src/services/api_client/api_request_type.dart';
 import 'package:easy_do/src/services/api_client/multipart_file_with_name.dart';
 import 'package:easy_do/src/services/api_client/remote_url.dart';
 import 'package:easy_do/src/utils/log_message.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
@@ -246,7 +248,7 @@ class ApiClient {
     return header;
   }
 
-  asyncFileUpload(File file) async {
+  asyncFileUpload({required File file, required BuildContext context}) async {
     //create multipart request for POST or PATCH method
     var request =
         http.MultipartRequest("POST", Uri.parse(RemoteUrl.profileImage));
@@ -262,6 +264,9 @@ class ApiClient {
     //Get the response from the server
     var responseData = await response.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
-    print(responseString);
+    logSmall(message: responseString);
+    if (context.mounted) {
+      context.pop();
+    }
   }
 }

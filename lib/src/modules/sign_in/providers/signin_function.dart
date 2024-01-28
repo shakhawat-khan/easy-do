@@ -41,6 +41,7 @@ Future<bool> login(
         preferences.setString('userId', userId);
         appUserToken = preferences.getString('token') ?? '';
         appUserId = preferences.getString('userId') ?? '';
+        logSmall(message: appUserId);
         context.goNamed(AppRoute.bottomNav.name);
       }
 

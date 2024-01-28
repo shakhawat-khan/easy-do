@@ -23,13 +23,14 @@ class _SplashScreenState extends State<SplashScreen>
 
     Future.delayed(const Duration(seconds: 2), () {
       // context.pushReplacementNamed(AppRoute.signIn.name);
-      if (preferences.getString('token') == null) {
+      if (preferences.getString('token') == null ||
+          preferences.getString('token') == '') {
         // Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (context) => const SignInView()));
         context.pushReplacementNamed(AppRoute.signIn.name);
       } else {
-        appUserToken = preferences.getString('token') ?? '';
-
+        appUserToken = preferences.getString('token') ?? 'token';
+        appUserId = preferences.getString('userId') ?? 'id';
         context.pushReplacementNamed(AppRoute.bottomNav.name);
         // Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (context) => const BottomNavBarPage()));

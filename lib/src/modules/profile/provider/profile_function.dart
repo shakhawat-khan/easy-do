@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:easy_do/main.dart';
 import 'package:easy_do/src/modules/create_task/provider/create_task_function.dart';
 import 'package:easy_do/src/modules/profile/model/profile_model.dart';
 import 'package:easy_do/src/services/api_client/remote_url.dart';
@@ -35,11 +36,13 @@ class ApiServicesProfileScreen {
   }
 
   Future<Uint8List?> fetchImage() async {
-    final response = await http.get(
-        Uri.parse('${RemoteUrl.baseUrl}user/65b11bd78615715e88080b5c/avatar'));
+    logSmall(message: appUserId);
+    final response =
+        await http.get(Uri.parse('${RemoteUrl.baseUrl}user/$appUserId/avatar'));
 
     if (response.statusCode == 200) {
       logSmall(message: response.bodyBytes.toString());
+
       return response.bodyBytes;
     } else {
       throw Exception('Failed to load image');
