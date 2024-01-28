@@ -32,11 +32,15 @@ Future<bool> login(
 
         final parsedJson = jsonDecode(response.body) as Map<String, dynamic>;
         final token = parsedJson['token'];
+        final userId = parsedJson['user']['_id'];
 
+        logSmall(message: userId);
         logSmall(message: token);
 
         preferences.setString('token', token);
+        preferences.setString('userId', userId);
         appUserToken = preferences.getString('token') ?? '';
+        appUserId = preferences.getString('userId') ?? '';
         context.goNamed(AppRoute.bottomNav.name);
       }
 

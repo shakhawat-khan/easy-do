@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:easy_do/src/modules/home_screen/model/all_task_model.dart';
+import 'package:easy_do/src/modules/profile/model/profile_model.dart';
 import 'package:easy_do/src/utils/api_client/remote_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,3 +20,5 @@ final taskValueProvider = StateProvider<Data?>((ref) => null);
 final getAllTaskResponse = StateProvider<GetAllTaskModel?>((ref) => null);
 
 final listOfTaskProvider = StateProvider<List<Data>?>((ref) => null);
+
+final listOfProfiledataProvider = StateProvider<ProfileModel?>((ref) => null);

@@ -5,4 +5,5 @@ class RemoteUrl {
   static String loginUrl = '${baseUrl}user/login/';
   static String createUserUrl = '${baseUrl}user/register/';
   static String createTask = '${baseUrl}task/';
+  static String profileInfo = '${baseUrl}user/me';
 }

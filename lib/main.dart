@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 late SharedPreferences preferences;
 
 String appUserToken = "";
+String appUserId = "";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

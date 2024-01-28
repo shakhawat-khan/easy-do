@@ -38,7 +38,7 @@ class ApiServicesHomeScreen {
         return null;
       }
     } on Exception catch (e) {
-      debugPrint('Error to get blog by category. Exception ${e.toString()}');
+      debugPrint('Error Exception ${e.toString()}');
       return null;
     }
   }

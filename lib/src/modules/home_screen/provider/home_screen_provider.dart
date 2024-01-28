@@ -22,9 +22,9 @@ final incompleteTaskProvider = StateProvider<String?>((ref) => null);
 
 final completeTaskProvider = StateProvider<String?>((ref) => null);
 
-final userProvider =
+final userTaskProvider =
     Provider<ApiServicesHomeScreen>((ref) => ApiServicesHomeScreen());
 
-final userDataProvider = FutureProvider<GetAllTaskModel?>((ref) async {
-  return ref.watch(userProvider).getAllTask(token: appUserToken);
+final userTaskDataProvider = FutureProvider<GetAllTaskModel?>((ref) async {
+  return ref.watch(userTaskProvider).getAllTask(token: appUserToken);
 });

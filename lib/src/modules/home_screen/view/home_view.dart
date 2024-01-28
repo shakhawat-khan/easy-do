@@ -26,7 +26,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final data = ref.watch(userDataProvider);
+    final data = ref.watch(userTaskDataProvider);
     return SafeArea(
       child: Scaffold(
         // appBar: AppBar(
@@ -111,32 +111,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 });
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: data!.data!.length,
+                    itemCount: data!.data!.isEmpty ? 1 : data.data!.length,
                     itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          logSmall(message: 'message');
+                      return data.data!.isEmpty == true
+                          ? const Center(child: Text('No Task Found'))
+                          : InkWell(
+                              onTap: () {
+                                logSmall(message: 'message');
 
-                          ref.read(taskValueProvider.notifier).state = Data(
-                              completed: data.data![index].completed!,
-                              dueDate: data.data![index].dueDate,
-                              description: data.data![index].description!,
-                              title: data.data![index].title!,
-                              sId: data.data![index].sId);
+                                ref.read(taskValueProvider.notifier).state =
+                                    Data(
+                                        completed: data.data![index].completed!,
+                                        dueDate: data.data![index].dueDate,
+                                        description:
+                                            data.data![index].description!,
+                                        title: data.data![index].title!,
+                                        sId: data.data![index].sId);
 
-                          context
-                              .pushNamed(AppRoute.taskDetails.name)
-                              .then((value) {
-                            ref.refresh(userDataProvider);
-                          });
-                        },
-                        child: TaskCard(
-                          isComplete: data.data![index].completed!,
-                          datetime: data.data![index].dueDate!,
-                          dec: data.data![index].description!,
-                          title: data.data![index].title!,
-                        ),
-                      );
+                                context
+                                    .pushNamed(AppRoute.taskDetails.name)
+                                    .then((value) {
+                                  ref.refresh(userTaskDataProvider);
+                                });
+                              },
+                              child: TaskCard(
+                                isComplete: data.data![index].completed!,
+                                datetime: data.data![index].dueDate!,
+                                dec: data.data![index].description!,
+                                title: data.data![index].title!,
+                              ),
+                            );
                     },
                   ),
                 );
@@ -152,7 +156,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           backgroundColor: HexColor('#8C88CD'),
           onPressed: () {
             context.pushNamed(AppRoute.createTask.name).then((value) {
-              ref.refresh(userDataProvider);
+              ref.refresh(userTaskDataProvider);
             });
           },
           label: const Text(
