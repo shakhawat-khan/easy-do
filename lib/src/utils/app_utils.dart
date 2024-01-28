@@ -24,13 +24,6 @@ class AppUtils {
   /// error toast
   static void errorToast(
       {required String message, required BuildContext context}) {
-    // Fluttertoast.showToast(
-    //   msg: message,
-    //   gravity: ToastGravity.BOTTOM,
-    //   toastLength: Toast.LENGTH_LONG,
-    //   textColor: whiteTextColor,
-    //   backgroundColor: redBgColor,
-    // );
     final snackBar = SnackBar(
       content: Text(message.toString().replaceAll("", '')),
     );
@@ -41,13 +34,6 @@ class AppUtils {
   /// success toast
   static void successToast(
       {required String message, required BuildContext context}) {
-    // Fluttertoast.showToast(
-    //   msg: message,
-    //   gravity: ToastGravity.BOTTOM,
-    //   toastLength: Toast.LENGTH_LONG,
-    //   textColor: whiteTextColor,
-    //   backgroundColor: greenBgColor,
-    // );
     final snackBar = SnackBar(
       content: Text(message.replaceAll("", '')),
     );
@@ -59,13 +45,6 @@ class AppUtils {
   /// general toast
   static void generalToast(
       {required String message, required BuildContext context}) {
-    // Fluttertoast.showToast(
-    //   msg: message,
-    //   gravity: ToastGravity.BOTTOM,
-    //   toastLength: Toast.LENGTH_LONG,
-    //   textColor: blackTextColor,
-    //   backgroundColor: primaryColor,
-    // );
     final snackBar = SnackBar(
       content: Text(message.replaceAll("", '')),
     );

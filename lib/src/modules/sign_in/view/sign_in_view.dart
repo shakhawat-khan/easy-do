@@ -82,7 +82,7 @@ class SignInView extends ConsumerWidget {
                         validator: (value) {
                           if (AppUtils.isValidPassword(password: value!) ==
                               false) {
-                            return 'Invalid Password';
+                            return 'password must be 6 digits';
                           }
                           return null;
                         },

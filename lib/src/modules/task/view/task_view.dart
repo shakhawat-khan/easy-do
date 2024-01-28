@@ -25,7 +25,7 @@ class TaskView extends ConsumerWidget {
             : ListView.builder(
                 itemCount: ref.watch(listOfTaskProvider)!.length,
                 itemBuilder: (context, index) {
-                  ref.watch(listOfTaskProvider.notifier).state!.sort((a, b) {
+                  ref.watch(listOfTaskProvider)!.sort((a, b) {
                     final dateFormat =
                         DateFormat("yyyy-MM-dd"); // Assuming your date format
                     final aDueDate = dateFormat.parse(a.dueDate ?? "");
