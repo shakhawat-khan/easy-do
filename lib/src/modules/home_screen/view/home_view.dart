@@ -104,11 +104,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               gapH16,
               data.when(data: (data) {
-                Future.delayed(const Duration(seconds: 1)).then((val) {
-                  // Your logic here
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                   ref.read(listOfTaskProvider.notifier).state = data!.data;
                   incompleteCompleteTask(ref: ref);
                 });
+
                 return Expanded(
                   child: ListView.builder(
                     itemCount: data!.data!.isEmpty ? 1 : data.data!.length,

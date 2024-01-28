@@ -74,9 +74,8 @@ class ProfileView extends ConsumerWidget {
                     child: Row(
                       children: [
                         profileImage.when(data: (data) {
-                          Future.delayed(const Duration(seconds: 1))
-                              .then((val) {
-                            // Your logic here
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) {
                             if (data != null) {
                               ref
                                   .read(profileImageUnitListProvider.notifier)
